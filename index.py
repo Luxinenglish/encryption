@@ -7,31 +7,46 @@ def generate_key():
 
 def save_key(key, filename="key.key"):
     """Sauvegarde la clé dans un fichier."""
-    with open(filename, "wb") as key_file:
-        key_file.write(key)
+    try:
+        with open(filename, "wb") as key_file:
+            key_file.write(key)
+    except IOError as e:
+        print(f"Erreur lors de la sauvegarde de la clé : {e}")
 
 def load_key(filename="key.key"):
     """Charge une clé depuis un fichier."""
-    with open(filename, "rb") as key_file:
-        return key_file.read()
+    try:
+        with open(filename, "rb") as key_file:
+            return key_file.read()
+    except IOError as e:
+        print(f"Erreur lors du chargement de la clé : {e}")
+        return None
 
 def encrypt_file(file_path, key):
     """Encrypte un fichier."""
     fernet = Fernet(key)
-    with open(file_path, "rb") as file:
-        data = file.read()
-    encrypted_data = fernet.encrypt(data)
-    with open(file_path, "wb") as file:
-        file.write(encrypted_data)
+    try:
+        with open(file_path, "rb") as file:
+            data = file.read()
+        encrypted_data = fernet.encrypt(data)
+        with open(file_path, "wb") as file:
+            file.write(encrypted_data)
+    except IOError as e:
+        print(f"Erreur lors de l'encryptage du fichier {file_path} : {e}")
 
 def decrypt_file(file_path, key):
     """Décrypte un fichier."""
     fernet = Fernet(key)
-    with open(file_path, "rb") as file:
-        encrypted_data = file.read()
-    decrypted_data = fernet.decrypt(encrypted_data)
-    with open(file_path, "wb") as file:
-        file.write(decrypted_data)
+    try:
+        with open(file_path, "rb") as file:
+            encrypted_data = file.read()
+        decrypted_data = fernet.decrypt(encrypted_data)
+        with open(file_path, "wb") as file:
+            file.write(decrypted_data)
+    except IOError as e:
+        print(f"Erreur lors du décryptage du fichier {file_path} : {e}")
+    except Exception as e:
+        print(f"Erreur lors du décryptage des données du fichier {file_path} : {e}")
 
 def encrypt_folder(folder_path):
     """Encrypte tous les fichiers dans un dossier."""
@@ -44,21 +59,28 @@ def encrypt_folder(folder_path):
 
 def decrypt_folder(folder_path, key):
     """Décrypte tous les fichiers dans un dossier avec une clé."""
-    fernet = Fernet(key)
+    try:
+        fernet = Fernet(key)
+    except ValueError as e:
+        print(f"Clé de décryptage invalide : {e}")
+        return False
+
     try:
         for root, _, files in os.walk(folder_path):
             for file in files:
                 decrypt_file(os.path.join(root, file), key)
         print("Décryptage terminé.")
+        return True
     except Exception as e:
         print(f"Erreur lors du décryptage : {e}")
+        return False
 
 def main():
     print("1. Encrypter un dossier")
     print("2. Décrypter un dossier")
     choice = input("Choisissez une option (1/2) : ")
     folder_path = input("Chemin du dossier : ")
-    
+
     if choice == "1":
         encrypt_folder(folder_path)
     elif choice == "2":
