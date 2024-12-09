@@ -23,7 +23,8 @@ Install the `cryptography` library using pip:
 
 ### Running the Script
 
-1. Clone the repository or save the script to your local machine.
+1. Clone the repository or save the script to your local machine and open it.
+   <pre><code>git clone https://github.com/Luxinenglish/encryption.git | cd encryption</code></pre>
 2. Run the script in a terminal:
    <pre><code>python index.py</code></pre>
 
