@@ -25,7 +25,7 @@ Install the `cryptography` library using pip:
 
 1. Clone the repository or save the script to your local machine.
 2. Run the script in a terminal:
-   <pre><code>python script_name.py</code></pre>
+   <pre><code>python index.py</code></pre>
 
 ### Options
 
