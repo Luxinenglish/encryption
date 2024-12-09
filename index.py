@@ -1,9 +1,11 @@
 import os
 from cryptography.fernet import Fernet
 
+
 def generate_key():
     """Generates an encryption key."""
     return Fernet.generate_key()
+
 
 def save_key(key, filename="key.key"):
     """Saves the key to a file."""
@@ -13,6 +15,7 @@ def save_key(key, filename="key.key"):
     except IOError as e:
         print(f"Error saving the key: {e}")
 
+
 def load_key(filename="key.key"):
     """Loads a key from a file."""
     try:
@@ -21,6 +24,7 @@ def load_key(filename="key.key"):
     except IOError as e:
         print(f"Error loading the key: {e}")
         return None
+
 
 def encrypt_file(file_path, key):
     """Encrypts a file."""
@@ -33,6 +37,7 @@ def encrypt_file(file_path, key):
             file.write(encrypted_data)
     except IOError as e:
         print(f"Error encrypting the file {file_path}: {e}")
+
 
 def decrypt_file(file_path, key):
     """Decrypts a file."""
@@ -48,6 +53,7 @@ def decrypt_file(file_path, key):
     except Exception as e:
         print(f"Error decrypting the data in the file {file_path}: {e}")
 
+
 def encrypt_folder(folder_path):
     """Encrypts all files in a folder."""
     key = generate_key()
@@ -56,6 +62,7 @@ def encrypt_folder(folder_path):
     for root, _, files in os.walk(folder_path):
         for file in files:
             encrypt_file(os.path.join(root, file), key)
+
 
 def decrypt_folder(folder_path, key):
     """Decrypts all files in a folder using a key."""
@@ -75,6 +82,7 @@ def decrypt_folder(folder_path, key):
         print(f"Error during decryption: {e}")
         return False
 
+
 def main():
     print("1. Encrypt a folder")
     print("2. Decrypt a folder")
@@ -88,6 +96,7 @@ def main():
         decrypt_folder(folder_path, key)
     else:
         print("Invalid choice.")
+
 
 if __name__ == "__main__":
     main()
